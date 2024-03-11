@@ -19,8 +19,6 @@ import java.util.concurrent.ThreadFactory;
 
 /**
  * A ThreadFactory to create threads with a given priority.
- *
- * @author Stefan Feldbinder <sfeldbin@googlemail.com>
  */
 public class PriorityThreadFactory implements ThreadFactory {
 

@@ -23,8 +23,6 @@ import java.util.function.Supplier;
  * Confirmation of initialization is done by replacing the accessor function.
  * This way the JIT can easily determine that the resulting accessor is empty
  * boilerplate that can be inlined.
- *
- * @author Stefan Feldbinder <sfeldbin@googlemail.com>
  */
 public class LazyInit<T> implements Supplier<T> {
 

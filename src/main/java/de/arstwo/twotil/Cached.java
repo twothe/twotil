@@ -33,33 +33,32 @@ import java.util.function.Function;
  * }
  * </pre>
  *
- * @author Stefan Feldbinder <sfeldbin@googlemail.com>
- * @param <KEY> any
- * @param <VALUE> any
+ * @param <K> any
+ * @param <V> any
  */
-public class Cached<KEY, VALUE> implements Function<KEY, VALUE> {
+public class Cached<K, V> implements Function<K, V> {
 
 	/**
 	 * Convenience accessor for functional feeling.
 	 *
-	 * @param <IN> any
-	 * @param <OUT> any
+	 * @param <I> any
+	 * @param <O> any
 	 * @param source supplier for cache misses.
 	 * @return A function that caches the result of the given source function.
 	 */
-	public static <IN, OUT> Function<IN, OUT> cached(final Function<IN, OUT> source) {
+	public static <I, O> Function<I, O> cached(final Function<I, O> source) {
 		return new Cached(source);
 	}
 
-	final Function<KEY, VALUE> source;
-	final ConcurrentMap<KEY, Optional<VALUE>> cache = new ConcurrentHashMap<>();
+	final Function<K, V> source;
+	final ConcurrentMap<K, Optional<V>> cache = new ConcurrentHashMap<>();
 
 	/**
 	 * Creates a new cache with source as the supplier.
 	 *
 	 * @param source accessor to the data to cache.
 	 */
-	public Cached(final Function<KEY, VALUE> source) {
+	public Cached(final Function<K, V> source) {
 		this.source = source;
 	}
 
@@ -69,7 +68,7 @@ public class Cached<KEY, VALUE> implements Function<KEY, VALUE> {
 	 * @param key the key to look for.
 	 * @return the value retrieved either from cache, or from the source.
 	 */
-	public VALUE get(final KEY key) {
+	public V get(final K key) {
 		return cache.computeIfAbsent(key, source.andThen(Optional::ofNullable)).orElse(null);
 	}
 
@@ -80,7 +79,7 @@ public class Cached<KEY, VALUE> implements Function<KEY, VALUE> {
 	 * @return the value retrieved either from cache, or from the source.
 	 */
 	@Override
-	public VALUE apply(final KEY key) {
+	public V apply(final K key) {
 		return get(key);
 	}
 

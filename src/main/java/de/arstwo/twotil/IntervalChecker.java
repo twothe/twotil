@@ -36,8 +36,6 @@ import java.util.concurrent.atomic.AtomicReference;
  *   everyMinute.executeIfDue(myTask::run);
  * }
  * </pre>
- *
- * @author Stefan Feldbinder <sfeldbin@googlemail.com>
  */
 public class IntervalChecker {
 

@@ -35,8 +35,6 @@ import java.util.List;
  *   }
  * }
  * </pre>
- *
- * @author Stefan Feldbinder <sfeldbin@googlemail.com>
  */
 public final class Partition<T> extends AbstractList<List<T>> {
 

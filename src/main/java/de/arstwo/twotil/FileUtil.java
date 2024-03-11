@@ -27,8 +27,6 @@ import java.util.zip.ZipInputStream;
 
 /**
  * Various file-related utility functions.
- *
- * @author Stefan Feldbinder <sfeldbin@googlemail.com>
  */
 public class FileUtil {
 
@@ -75,5 +73,11 @@ public class FileUtil {
 		} catch (IOException e) {
 			return false;
 		}
+	}
+
+	/**
+	 * Do not instantiate.
+	 */
+	private FileUtil() {
 	}
 }

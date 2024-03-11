@@ -40,8 +40,6 @@ import java.util.stream.Collectors;
 
 /**
  * Colletion of various utility functions that fit nowhere else.
- *
- * @author Stefan Feldbinder <sfeldbin@googlemail.com>
  */
 public class Util {
 
@@ -76,6 +74,44 @@ public class Util {
 	 */
 	public static <T> T firstNonBlank(final T... values) {
 		return first(Util::isNotBlank, values);
+	}
+
+	/**
+	 * Returns true if no value passes the given validator.
+	 */
+	public static <T> boolean noneMatch(final Predicate<T> validator, final T... values) {
+		for (final T t : values) {
+			if (validator.test(t)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Returns true if all values pass the given validator.
+	 */
+	public static <T> boolean allMatch(final Predicate<T> validator, final T... values) {
+		return noneMatch(validator.negate(), values);
+	}
+
+	/**
+	 * Returns true if at least one value passes the given validator.
+	 */
+	public static <T> boolean anyMatch(final Predicate<T> validator, final T... values) {
+		for (final T t : values) {
+			if (validator.test(t)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Returns true if at least one value fails the given validator.
+	 */
+	public static <T> boolean anyFail(final Predicate<T> validator, final T... values) {
+		return anyMatch(validator.negate(), values);
 	}
 
 	/**
@@ -252,8 +288,7 @@ public class Util {
 		return map.entrySet().stream()
 						.collect(Collectors.groupingBy(
 										Map.Entry::getValue,
-										Collectors.mapping(Map.Entry::getKey, Collectors.toList())
-						));
+										Collectors.mapping(Map.Entry::getKey, Collectors.toList())));
 	}
 
 	/**
@@ -280,11 +315,11 @@ public class Util {
 	 * @param comparator comparator for sorting
 	 * @return the grouped map with sorted list members
 	 */
-	public static <K, V> Map<K, NavigableSet<V>> groupListSorted(final List<V> list, final Function<V, K> keyMapper, final Comparator<V> comparator) {
+	public static <K, V> Map<K, NavigableSet<V>> groupListSorted(final List<V> list, final Function<V, K> keyMapper,
+					final Comparator<V> comparator) {
 		return list.stream().collect(
 						Collectors.groupingBy(keyMapper,
-										Collectors.toCollection(() -> new TreeSet<V>(comparator)))
-		);
+										Collectors.toCollection(() -> new TreeSet<V>(comparator))));
 	}
 
 	/**
@@ -295,11 +330,9 @@ public class Util {
 	 * @return a comparator that sorts the data by date ascending.
 	 */
 	public static <T> Comparator<T> compareDatesASC(final Function<T, Date> dateGetFunc) {
-		return (c1, c2) -> {
-			final Date d1 = dateGetFunc.apply(c1);
-			final Date d2 = dateGetFunc.apply(c2);
+		return Comparator.comparing(dateGetFunc, (d1, d2) -> {
 			return d1.before(d2) ? -1 : (d1.equals(d2) ? 0 : 1);
-		};
+		});
 	}
 
 	/**
@@ -310,11 +343,9 @@ public class Util {
 	 * @return a comparator that sorts the data by date descending.
 	 */
 	public static <T> Comparator<T> compareDatesDESC(final Function<T, Date> dateGetFunc) {
-		return (c1, c2) -> {
-			final Date d1 = dateGetFunc.apply(c1);
-			final Date d2 = dateGetFunc.apply(c2);
+		return Comparator.comparing(dateGetFunc, (d1, d2) -> {
 			return d2.before(d1) ? -1 : (d1.equals(d2) ? 0 : 1);
-		};
+		});
 	}
 
 	/**
@@ -327,12 +358,14 @@ public class Util {
 			final List<Class<?>> result = new ArrayList<>();
 			final String packageName = sourcePackage.replace(".", "/");
 
-			for (final Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(packageName); resources.hasMoreElements();) {
+			for (final Enumeration<URL> resources = Thread.currentThread().getContextClassLoader()
+							.getResources(packageName); resources.hasMoreElements();) {
 				final List<Class<?>> newClasses = Files.walk(Paths.get(resources.nextElement().toURI()))
 								.filter(f -> Files.isRegularFile(f) && f.toString().endsWith(SUFFIX_CLASS))
 								.map(f -> {
 									final String filename = f.getFileName().toString();
-									final String fullClassName = sourcePackage + '.' + filename.substring(0, filename.length() - SUFFIX_CLASS.length());
+									final String fullClassName = sourcePackage + '.'
+													+ filename.substring(0, filename.length() - SUFFIX_CLASS.length());
 									try {
 										return Class.forName(fullClassName);
 									} catch (ClassNotFoundException e) {
@@ -349,4 +382,9 @@ public class Util {
 		}
 	}
 
+	/**
+	 * Do not instantiate.
+	 */
+	private Util() {
+	}
 }
