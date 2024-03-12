@@ -150,9 +150,7 @@ public class Vector4f implements Cloneable {
 	 * @return this vector, with all data set to the new values.
 	 */
 	protected Vector4f setUnchecked(final float[] data) {
-		for (int i = LENGTH - 1; i >= 0; --i) {
-			this.data[i] = data[i];
-		}
+		System.arraycopy(data, 0, this.data, 0, LENGTH);
 		return this;
 	}
 
@@ -264,7 +262,7 @@ public class Vector4f implements Cloneable {
 	public Vector4f normalize() {
 		final float length = this.length();
 		if (length == 0.0f) {
-			throw new NullPointerException();
+			throw new ArithmeticException("Cannot normalize vector with length equal to zero");
 		}
 		this.data[X] /= length;
 		this.data[Y] /= length;
@@ -475,9 +473,11 @@ public class Vector4f implements Cloneable {
 	 * @return this vector.
 	 */
 	public Vector4f cross(final Vector4f other) {
-		this.data[X] = this.data[Y] * other.data[Z] - this.data[Z] * other.data[Y];
-		this.data[Y] = this.data[Z] * other.data[X] - this.data[X] * other.data[Z];
+		final float newX = this.data[Y] * other.data[Z] - this.data[Z] * other.data[Y];
+		final float newY = this.data[Z] * other.data[X] - this.data[X] * other.data[Z];
 		this.data[Z] = this.data[X] * other.data[Y] - this.data[Y] * other.data[X];
+		this.data[X] = newX;
+		this.data[Y] = newY;
 		return this;
 	}
 
@@ -519,6 +519,33 @@ public class Vector4f implements Cloneable {
 	 */
 	public FloatBuffer buffer() {
 		return this.buffer;
+	}
+
+	/**
+	 * Returns the X component of this vector.
+	 *
+	 * @return the X component of this vector.
+	 */
+	public float getX() {
+		return this.data[X];
+	}
+
+	/**
+	 * Returns the Y component of this vector.
+	 *
+	 * @return the Y component of this vector.
+	 */
+	public float getY() {
+		return this.data[Y];
+	}
+
+	/**
+	 * Returns the Z component of this vector.
+	 *
+	 * @return the Z component of this vector.
+	 */
+	public float getZ() {
+		return this.data[Z];
 	}
 
 	@Override

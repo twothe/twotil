@@ -29,6 +29,12 @@ import java.util.Arrays;
  */
 public class Matrix4f implements Cloneable {
 
+	/* Data length of this Matrix class */
+	public static final int ROWS = 4;
+	public static final int COLS = 4;
+	public static final int LENGTH = ROWS * COLS;
+	public static final int SIZE_BYTE = LENGTH * (Float.SIZE >>> 3);
+	
 	private static final float[] IDENTITY_DATA = new float[]{
 		1.0f, 0.0f, 0.0f, 0.0f,
 		0.0f, 1.0f, 0.0f, 0.0f,
@@ -36,6 +42,8 @@ public class Matrix4f implements Cloneable {
 		0.0f, 0.0f, 0.0f, 1.0f
 	};
 	protected static final Matrix4f IDENTITY = new Matrix4f().setIdentity();
+	
+	private static final float[] ZERO_DATA = new float[LENGTH];
 
 	/**
 	 * Returns a new identity matrix.
@@ -45,11 +53,6 @@ public class Matrix4f implements Cloneable {
 	public static Matrix4f getIdentityMatrix() {
 		return IDENTITY.clone();
 	}
-	/* Data length of this Matrix class */
-	public static final int ROWS = 4;
-	public static final int COLS = 4;
-	public static final int LENGTH = ROWS * COLS;
-	public static final int SIZE_BYTE = LENGTH * (Float.SIZE >>> 3);
 	/**
 	 * Matrix constants for easier access: | xx xy xz xw | | yx yy yz yw | | zx zy zz zw | | wx wy wz ww |
 	 *
@@ -122,23 +125,31 @@ public class Matrix4f implements Cloneable {
 		this.data[XY] = data[++i];
 		this.data[XZ] = data[++i];
 		this.data[XW] = data[++i];
-		
+
 		this.data[YX] = data[++i];
 		this.data[YY] = data[++i];
 		this.data[YZ] = data[++i];
 		this.data[YW] = data[++i];
-		
+
 		this.data[ZX] = data[++i];
 		this.data[ZY] = data[++i];
 		this.data[ZZ] = data[++i];
 		this.data[ZW] = data[++i];
-		
+
 		this.data[WX] = data[++i];
 		this.data[WY] = data[++i];
 		this.data[WZ] = data[++i];
 		this.data[WW] = data[++i];
-		
+
 		return this;
+	}
+	
+	/**
+	 * Sets the content of this matrix to all 0.
+	 * @return this matrix, with all content set to 0.
+	 */
+	public Matrix4f setZero() {
+		return this.setUnchecked(ZERO_DATA);
 	}
 
 	/**
@@ -148,9 +159,7 @@ public class Matrix4f implements Cloneable {
 	 * @return this matrix, with all data setColumnMajor to the new values.
 	 */
 	protected Matrix4f setUnchecked(final float[] data) {
-		for (int i = LENGTH - 1; i >= 0; --i) {
-			this.data[i] = data[i];
-		}
+		System.arraycopy(data, 0, this.data, 0, LENGTH);
 		return this;
 	}
 
@@ -339,7 +348,9 @@ public class Matrix4f implements Cloneable {
 	}
 
 	/**
-	 * Sets this matrix to a translation matrix with the given values.
+	 * Sets the translation components of this matrix with the given values.
+	 * <p>
+	 * Note that all other values are kept as they were. If you want a pure translation matrix you need to setIdentity first.
 	 *
 	 * @param x any float
 	 * @param y any float
