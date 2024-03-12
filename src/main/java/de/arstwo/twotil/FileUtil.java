@@ -46,8 +46,10 @@ public class FileUtil {
 
 	/**
 	 * Extracts the content of a zip file to a given target directory.
+	 * <p>
+	 * Ignores directorie sin the zip, only files in the root directory are extracted.
 	 */
-	public static boolean unzip(final Path source, final Path targetDir) {
+	public static boolean unzipRootOnly(final Path source, final Path targetDir) {
 		try (final ZipInputStream zis = new ZipInputStream(Files.newInputStream(source))) {
 			ZipEntry zipEntry;
 			while ((zipEntry = zis.getNextEntry()) != null) {
