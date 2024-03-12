@@ -16,6 +16,7 @@
 package de.arstwo.twotil;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -125,25 +126,7 @@ public class Util {
 		} else if (t instanceof Collection) {
 			return ((Collection) t).isEmpty();
 		} else if (t.getClass().isArray()) {
-			if (t instanceof Object[]) {
-				return ((Object[]) t).length == 0;
-			} else if (t instanceof int[]) {
-				return ((int[]) t).length == 0;
-			} else if (t instanceof double[]) {
-				return ((double[]) t).length == 0;
-			} else if (t instanceof long[]) {
-				return ((long[]) t).length == 0;
-			} else if (t instanceof float[]) {
-				return ((float[]) t).length == 0;
-			} else if (t instanceof char[]) {
-				return ((char[]) t).length == 0;
-			} else if (t instanceof byte[]) {
-				return ((byte[]) t).length == 0;
-			} else if (t instanceof short[]) {
-				return ((short[]) t).length == 0;
-			} else if (t instanceof boolean[]) {
-				return ((boolean[]) t).length == 0;
-			}
+			return Array.getLength(t) == 0;
 		}
 		return false; // anything unknown but not null is not empty
 	}
@@ -154,6 +137,11 @@ public class Util {
 
 	/**
 	 * Tests whether or not something is either null or contains no relevant content.
+	 * <p>
+	 * A String is blank if it contains nothing or only whitespace.<br>
+	 * A Colection is blank if it contains nothing or only blank elements.<br>
+	 * An Array is blank if it contains nothing, or - in case of an array of Objects - all objects contained are blank. Arrays of primitive data types do not
+	 * check individual elements, as there is no definition what a blank value is for e.g. a float.
 	 */
 	public static <T> boolean isBlank(final T t) {
 		if (t == null) {
@@ -162,27 +150,14 @@ public class Util {
 			final String s = ((String) t);
 			return s.isEmpty() || s.chars().allMatch(Character::isWhitespace);
 		} else if (t instanceof Collection) {
-			return ((Collection) t).isEmpty();
+			final Collection c = (Collection) t;
+			return c.isEmpty() || c.stream().allMatch(Util::isBlank);
 		} else if (t.getClass().isArray()) {
 			if (t instanceof Object[]) {
 				final Object[] a = (Object[]) t;
 				return (a.length == 0) || Arrays.stream(a).allMatch(Util::isBlank);
-			} else if (t instanceof int[]) {
-				return ((int[]) t).length == 0;
-			} else if (t instanceof double[]) {
-				return ((double[]) t).length == 0;
-			} else if (t instanceof long[]) {
-				return ((long[]) t).length == 0;
-			} else if (t instanceof float[]) {
-				return ((float[]) t).length == 0;
-			} else if (t instanceof char[]) {
-				return ((char[]) t).length == 0;
-			} else if (t instanceof byte[]) {
-				return ((byte[]) t).length == 0;
-			} else if (t instanceof short[]) {
-				return ((short[]) t).length == 0;
-			} else if (t instanceof boolean[]) {
-				return ((boolean[]) t).length == 0;
+			} else {
+				return Array.getLength(t) == 0;
 			}
 		}
 		return false; // anything unknown but not null is not empty
