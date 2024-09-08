@@ -82,5 +82,12 @@ public class Cached<K, V> implements Function<K, V> {
 	public V apply(final K key) {
 		return get(key);
 	}
+	
+	/**
+	 * Clears the cache.
+	 */
+	public void clear() {
+		this.cache.clear();
+	}
 
 }
