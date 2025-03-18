@@ -15,7 +15,6 @@
  */
 package de.arstwo.twotil;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -23,7 +22,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- *
+ * Functional approach of thread-safe lock access to a given target.
  */
 public class Guarded<T> {
 
@@ -39,6 +38,11 @@ public class Guarded<T> {
 		this(target, false);
 	}
 
+	/**
+	 * Accesses the target and supplies it to the given consumer when ready.
+	 *
+	 * @param action any consumer for the target
+	 */
 	public void access(final Consumer<T> action) {
 		lock.lock();
 		try {
@@ -48,6 +52,13 @@ public class Guarded<T> {
 		}
 	}
 
+	/**
+	 * Accesses the target, supplies it to the given function when ready and returns the computed result.
+	 *
+	 * @param <R> any result type of the function given
+	 * @param action the function to apply to the target once ready
+	 * @return the result of the function
+	 */
 	public <R> R process(final Function<T, R> action) {
 		lock.lock();
 		try {
@@ -57,16 +68,32 @@ public class Guarded<T> {
 		}
 	}
 
-	public void tryAccess(final Consumer<T> action) {
+	/**
+	 * Try immediate access to the target and forward it to the given consumer.
+	 *
+	 * @param action any consumer for the target
+	 * @return true if the target could be accessed immediately, false otherwise.
+	 */
+	public boolean tryAccess(final Consumer<T> action) {
 		if (lock.tryLock()) {
 			try {
 				action.accept(target);
 			} finally {
 				lock.unlock();
 			}
+			return true;
+		} else {
+			return false;
 		}
 	}
 
+	/**
+	 * Try to access the target immediately, supplies it to the given function when ready and possibly returns the computed result.
+	 *
+	 * @param <R> any result type of the function given
+	 * @param action the function to apply to the target if ready
+	 * @return an optional result of the function applied if the target was ready, an empty optional if it was not ready.
+	 */
 	public <R> Optional<R> tryProcess(final Function<T, R> action) {
 		if (lock.tryLock()) {
 			try {

@@ -15,6 +15,8 @@
  */
 package de.arstwo.twotil;
 
+import de.arstwo.twotil.functional.ThrowingFunction;
+import de.arstwo.twotil.functional.ThrowingSupplier;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.URISyntaxException;
@@ -55,7 +57,17 @@ public class Util {
 		}
 		return null;
 	}
-
+	/**
+	 * Returns the first element that passes the given validator, otherwise throw the supplied throwable.
+	 */
+	public static <T, E extends Throwable> T firstOrThrow(final Predicate<T> validator, final Supplier<E> throwable, final T... values) throws E {
+		for (final T t : values) {
+			if (validator.test(t)) {
+				return t;
+			}
+		}
+		throw throwable.get();
+	}
 	/**
 	 * Returns the first non-null element.
 	 */
@@ -200,6 +212,27 @@ public class Util {
 	 */
 	public static <T> T getOrDefault(final T optionalValue, final Supplier<T> generator) {
 		return optionalValue == null ? generator.get() : optionalValue;
+	}
+
+	/**
+	 * Functional convenience function to return the given value, or a default value if it is null. Compatible with methods that might throw an exception.
+	 */
+	public static <T, E extends Throwable> T getOrDefaultExceptional(final T optionalValue, final ThrowingSupplier<T, E> generator) throws E {
+		return optionalValue == null ? generator.get() : optionalValue;
+	}
+
+	/**
+	 * Functional convenience function to map the given value if present, or otherwise return null.
+	 */
+	public static <T, R> R mapIfPresent(final T optionalValue, final Function<T, R> mapper) {
+		return optionalValue == null ? null : mapper.apply(optionalValue);
+	}
+
+	/**
+	 * Functional convenience function to map the given value if present, or otherwise return null. Compatible with methods that might throw an exception.
+	 */
+	public static <T, R, E extends Throwable> R mapIfPresentExceptional(final T optionalValue, final ThrowingFunction<T, R, E> mapper) throws E {
+		return optionalValue == null ? null : mapper.apply(optionalValue);
 	}
 
 	/**
