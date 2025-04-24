@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -57,6 +58,7 @@ public class Util {
 		}
 		return null;
 	}
+
 	/**
 	 * Returns the first element that passes the given validator, otherwise throw the supplied throwable.
 	 */
@@ -68,6 +70,7 @@ public class Util {
 		}
 		throw throwable.get();
 	}
+
 	/**
 	 * Returns the first non-null element.
 	 */
@@ -255,10 +258,17 @@ public class Util {
 	}
 
 	/**
-	 * Convenience function to map a whole list with a given mapper and returns the result in a new list.
+	 * Convenience function to map a whole collection with a given mapper and returns the result in a new list.
 	 */
-	public static <T, R> List<R> mapList(final List<T> list, final Function<T, R> mapper) {
-		return list.stream().map(mapper).collect(Collectors.toList());
+	public static <T, R> List<R> mapList(final Collection<T> collection, final Function<T, R> mapper) {
+		return collection.stream().map(mapper).collect(Collectors.toList());
+	}
+
+	/**
+	 * Convenience function to map a whole collection with a given mapper and returns the result in a new set.
+	 */
+	public static <T, R> Set<R> mapSet(final Collection<T> collection, final Function<T, R> mapper) {
+		return collection.stream().map(mapper).collect(Collectors.toSet());
 	}
 
 	/**

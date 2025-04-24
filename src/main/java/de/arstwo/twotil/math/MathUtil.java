@@ -92,6 +92,21 @@ public class MathUtil {
 	}
 
 	/**
+	 * Returns the given value clamped to the min/max valued specified.
+	 *
+	 * @param <T> any comparable
+	 * @param value the value to check and return
+	 * @param min minimum value to clamp to
+	 * @param max maximum value to clamp to
+	 * @return the value given, clamped to the specified boundaries.
+	 */
+	public static <T extends Comparable<T>> T withinRange(final T value, final T min, final T max) {
+		return value.compareTo(min) < 0 ? min
+						: value.compareTo(max) > 0 ? max
+						: value;
+	}
+
+	/**
 	 * Do not instantiate.
 	 */
 	private MathUtil() {

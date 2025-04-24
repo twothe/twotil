@@ -15,10 +15,12 @@
  */
 package de.arstwo.twotil;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Simple key->value caching functionality, for both as a class and functional usage.
@@ -47,7 +49,7 @@ public class Cached<K, V> implements Function<K, V> {
 	 * @return A function that caches the result of the given source function.
 	 */
 	public static <I, O> Function<I, O> cached(final Function<I, O> source) {
-		return new Cached(source);
+		return new Cached<>(source);
 	}
 
 	final Function<K, V> source;
@@ -82,7 +84,7 @@ public class Cached<K, V> implements Function<K, V> {
 	public V apply(final K key) {
 		return get(key);
 	}
-	
+
 	/**
 	 * Clears the cache.
 	 */
@@ -90,4 +92,36 @@ public class Cached<K, V> implements Function<K, V> {
 		this.cache.clear();
 	}
 
+	/**
+	 * Cleanup method to remove individual items.
+	 * <p>
+	 * Values can be null.
+	 *
+	 * @param filter a predicate that returns true if an entry should be removed.
+	 */
+	public void removeIf(final Predicate<? super Map.Entry<K, V>> filter) {
+		this.cache.entrySet().removeIf(entry -> filter.test(Map.entry(entry.getKey(), entry.getValue().orElse(null))));
+	}
+
+	/**
+	 * Replaces a cache entry.
+	 *
+	 * @param key entry key
+	 * @param newValue new value to set
+	 */
+	public void replace(final K key, final V newValue) {
+		this.cache.replace(key, Optional.ofNullable(newValue));
+	}
+
+	/**
+	 * Replaces a cache entry if it matches the old value.
+	 *
+	 * @param key entry key
+	 * @param oldValue expected old value
+	 * @param newValue new value to set
+	 * @return true if the entry was replaced, false otherwise, which usually indicates that the values did not match.
+	 */
+	public boolean replaceIf(final K key, final V oldValue, final V newValue) {
+		return this.cache.replace(key, Optional.ofNullable(oldValue), Optional.ofNullable(newValue));
+	}
 }
