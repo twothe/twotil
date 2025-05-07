@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-prepare central</actionName>
+            <displayName>prepare central</displayName>
+            <goals>
+                <goal>release:prepare</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>central-release</activatedProfile>
+            </activatedProfiles>
+        </action>
+        <action>
+            <actionName>CUSTOM-publish central</actionName>
+            <displayName>publish central</displayName>
+            <goals>
+                <goal>release:perform</goal>
+            </goals>
+            <activatedProfiles>
+                <activatedProfile>central-release</activatedProfile>
+            </activatedProfiles>
+        </action>
+    </actions>
