@@ -16,7 +16,10 @@
 package de.arstwo.twotil.functional;
 
 /**
- * A Supplier that can also throw an exception.
+ * {@link java.util.function.Supplier} variant whose {@code get} method may throw an exception.
+ *
+ * @param <R> result type
+ * @param <E> exception type
  */
 @FunctionalInterface
 public interface ThrowingSupplier<R, E extends Throwable> {

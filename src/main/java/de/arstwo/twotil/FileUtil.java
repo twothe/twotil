@@ -30,25 +30,31 @@ import java.util.zip.ZipInputStream;
  */
 public class FileUtil {
 
-	/**
-	 * Creates a predicate for a functional context to test if a file is older than a given time frame.
-	 */
-	public static Predicate<Path> fileOlderThan(final long amountToSubtract, final TemporalUnit unit) {
-		final Instant compareInstant = Instant.now().minus(amountToSubtract, unit);
-		return (final Path p) -> {
-			try {
-				return Files.getLastModifiedTime(p).toInstant().isBefore(compareInstant);
-			} catch (IOException e) {
-				return false;
-			}
-		};
-	}
+        /**
+         * Creates a predicate that checks whether a file was modified before the specified duration.
+         *
+         * @param amountToSubtract amount of {@code unit} to subtract from now
+         * @param unit             time unit of the duration
+         * @return predicate returning {@code true} if the file is older than the computed timestamp
+         */
+        public static Predicate<Path> fileOlderThan(final long amountToSubtract, final TemporalUnit unit) {
+                final Instant compareInstant = Instant.now().minus(amountToSubtract, unit);
+                return (final Path p) -> {
+                        try {
+                                return Files.getLastModifiedTime(p).toInstant().isBefore(compareInstant);
+                        } catch (IOException e) {
+                                return false;
+                        }
+                };
+        }
 
-	/**
-	 * Extracts the content of a zip file to a given target directory.
-	 * <p>
-	 * Ignores directories in the zip, only files in the root directory are extracted.
-	 */
+        /**
+         * Extracts all files in the root of the given ZIP into the target directory.
+         *
+         * @param source     zip archive
+         * @param targetDir  directory to write to
+         * @return {@code true} on success, otherwise {@code false}
+         */
     public static boolean unzipRootOnly(final Path source, final Path targetDir) {
         try (final ZipInputStream zis = new ZipInputStream(Files.newInputStream(source))) {
             ZipEntry zipEntry;
@@ -67,14 +73,17 @@ public class FileUtil {
         }
     }
 
-	/**
-	 * Tries to delete a given path, catches potential IOExceptions, and returns true on success, false otherwise.
-	 */
-	public static boolean tryDeletePath(final Path p) {
-		try {
-			Files.deleteIfExists(p);
-			return true;
-		} catch (IOException e) {
+        /**
+         * Attempts to delete the given path.
+         *
+         * @param p path to delete
+         * @return {@code true} if deletion succeeded, otherwise {@code false}
+         */
+        public static boolean tryDeletePath(final Path p) {
+                try {
+                        Files.deleteIfExists(p);
+                        return true;
+                } catch (IOException e) {
 			return false;
 		}
 	}
