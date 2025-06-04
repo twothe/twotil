@@ -561,7 +561,7 @@ public class Matrix4f implements Cloneable {
 	 */
 	public boolean equals(Matrix4f other, float delta) {
 		for (int i = this.data.length - 1; i >= 0; --i) {
-			if (MathUtil.aboutEqual(this.data[i], other.data[i], delta)) {
+			if (!MathUtil.aboutEqual(this.data[i], other.data[i], delta)) {
 				return false;
 			}
 		}

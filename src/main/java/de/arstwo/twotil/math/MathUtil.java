@@ -76,7 +76,7 @@ public class MathUtil {
 	 * @return true if both values are equal within the given tolerance, false otherwise.
 	 */
 	public static boolean aboutEqual(final float a, final float b, final float delta) {
-		return abs(b - a) > delta;
+		return abs(b - a) <= delta;
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class MathUtil {
 	 * @return true if both values are equal within the given tolerance, false otherwise.
 	 */
 	public static boolean aboutEqual(final double a, final double b, final double delta) {
-		return abs(b - a) > delta;
+		return abs(b - a) <= delta;
 	}
 
 	/**
