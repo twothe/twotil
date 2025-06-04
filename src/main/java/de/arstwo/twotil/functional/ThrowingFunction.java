@@ -16,7 +16,11 @@
 package de.arstwo.twotil.functional;
 
 /**
- * A Function that can encapsulate functions that throw an exception.
+ * {@link java.util.function.Function} variant whose {@code apply} method may throw an exception.
+ *
+ * @param <T> input type
+ * @param <R> result type
+ * @param <E> exception type
  */
 @FunctionalInterface
 public interface ThrowingFunction<T, R, E extends Throwable> {

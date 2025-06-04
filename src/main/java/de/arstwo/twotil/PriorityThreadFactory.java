@@ -18,20 +18,32 @@ package de.arstwo.twotil;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * A ThreadFactory to create threads with a given priority.
+ * {@link ThreadFactory} that creates threads within a dedicated {@link ThreadGroup} and assigns a maximum priority.
  */
 public class PriorityThreadFactory implements ThreadFactory {
 
 	final ThreadGroup threadGroup;
 
-	public PriorityThreadFactory(final String name, final int maxPriority) {
-		this.threadGroup = new ThreadGroup(name);
-		this.threadGroup.setMaxPriority(maxPriority);
-	}
+        /**
+         * Creates a new factory with a separate thread group and maximum priority.
+         *
+         * @param name        name of the thread group
+         * @param maxPriority maximum priority of created threads
+         */
+        public PriorityThreadFactory(final String name, final int maxPriority) {
+                this.threadGroup = new ThreadGroup(name);
+                this.threadGroup.setMaxPriority(maxPriority);
+        }
 
-	@Override
-	public Thread newThread(Runnable r) {
-		return new Thread(threadGroup, r);
-	}
+        /**
+         * Creates a new thread in the configured thread group.
+         *
+         * @param r task to execute
+         * @return the created thread
+         */
+        @Override
+        public Thread newThread(final Runnable r) {
+                return new Thread(threadGroup, r);
+        }
 
 }

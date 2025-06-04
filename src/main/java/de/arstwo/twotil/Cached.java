@@ -40,17 +40,17 @@ import java.util.function.Predicate;
  */
 public class Cached<K, V> implements Function<K, V> {
 
-	/**
-	 * Convenience accessor for functional feeling.
-	 *
-	 * @param <I> any
-	 * @param <O> any
-	 * @param source supplier for cache misses.
-	 * @return A function that caches the result of the given source function.
-	 */
-	public static <I, O> Function<I, O> cached(final Function<I, O> source) {
-		return new Cached<>(source);
-	}
+        /**
+         * Returns a function that caches the results of the supplied function.
+         *
+         * @param <I> input type
+         * @param <O> output type
+         * @param source source function for cache misses
+         * @return caching wrapper for {@code source}
+         */
+        public static <I, O> Function<I, O> cached(final Function<I, O> source) {
+                return new Cached<>(source);
+        }
 
 	final Function<K, V> source;
 	final ConcurrentMap<K, Optional<V>> cache = new ConcurrentHashMap<>();
@@ -92,16 +92,14 @@ public class Cached<K, V> implements Function<K, V> {
 		this.cache.clear();
 	}
 
-	/**
-	 * Cleanup method to remove individual items.
-	 * <p>
-	 * Values can be null.
-	 *
-	 * @param filter a predicate that returns true if an entry should be removed.
-	 */
-	public void removeIf(final Predicate<? super Map.Entry<K, V>> filter) {
-		this.cache.entrySet().removeIf(entry -> filter.test(Map.entry(entry.getKey(), entry.getValue().orElse(null))));
-	}
+        /**
+         * Removes entries that match the given predicate.
+         *
+         * @param filter predicate tested against each key/value pair
+         */
+        public void removeIf(final Predicate<? super Map.Entry<K, V>> filter) {
+                this.cache.entrySet().removeIf(entry -> filter.test(Map.entry(entry.getKey(), entry.getValue().orElse(null))));
+        }
 
 	/**
 	 * Replaces a cache entry.

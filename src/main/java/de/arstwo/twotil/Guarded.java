@@ -29,14 +29,25 @@ public class Guarded<T> {
 	final T target;
 	final Lock lock;
 
-	public Guarded(final T target, final boolean fair) {
-		this.target = target;
-		this.lock = new ReentrantLock(fair);
-	}
+        /**
+         * Creates a guarded wrapper around the given target.
+         *
+         * @param target object to protect
+         * @param fair   if {@code true} use a fair lock
+         */
+        public Guarded(final T target, final boolean fair) {
+                this.target = target;
+                this.lock = new ReentrantLock(fair);
+        }
 
-	public Guarded(final T target) {
-		this(target, false);
-	}
+        /**
+         * Creates a guarded wrapper using a non-fair lock.
+         *
+         * @param target object to protect
+         */
+        public Guarded(final T target) {
+                this(target, false);
+        }
 
 	/**
 	 * Accesses the target and supplies it to the given consumer when ready.

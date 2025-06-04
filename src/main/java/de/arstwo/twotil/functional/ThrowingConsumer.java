@@ -16,7 +16,10 @@
 package de.arstwo.twotil.functional;
 
 /**
+ * {@link java.util.function.Consumer} that may throw an exception.
  *
+ * @param <T> argument type
+ * @param <E> exception type
  */
 @FunctionalInterface
 public interface ThrowingConsumer<T, E extends Throwable> {
