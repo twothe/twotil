@@ -19,11 +19,11 @@ import java.nio.FloatBuffer;
 import java.util.Arrays;
 
 /**
- * A 3D Matrix implentation for Quaternions using floats.
+ * A 3D Matrix implementation for Quaternions using floats.
  * <p>
  * Calculations are done in place, so no additional memory is allocated by operations.
  * <p>
- * This is compatible with OpenGL and other imeplementations, which use a colum-major approach instead of the row-major that is intuitively used. This is only
+ * This is compatible with OpenGL and other implementations, which use a column-major approach instead of the row-major that is intuitively used. This is only
  * relevant if accessing the data directly. It's underlying FloatBuffer can therefore be directly inserted into OpenGL. You can use the constants below to
  * access specific data points directly.
  */
@@ -90,9 +90,9 @@ public class Matrix4f implements Cloneable {
 	/**
 	 * Sets the data of this matrix to the given external data represented in that array.
 	 * <p>
-	 * The expected format is colum-major (xx yx zx wx...)
+	 * The expected format is column-major (xx yx zx wx...)
 	 *
-	 * @param data any compatible float array that holds data flatted by column then by row.
+	 * @param data any compatible float array that holds data flattened by column then by row.
 	 * @return
 	 */
 	public Matrix4f setColumnMajor(final float[] data) {
@@ -108,9 +108,9 @@ public class Matrix4f implements Cloneable {
 	/**
 	 * Sets the data of this matrix to the given external data represented in that array, that is in a row-major format.
 	 * <p>
-	 * The internal format is colum-major (xx yx zx wx...), while the input data is row-major (xx, xy, xz, xw, ...).
+	 * The internal format is column-major (xx yx zx wx...), while the input data is row-major (xx, xy, xz, xw, ...).
 	 *
-	 * @param data any compatible float array that holds data flatted by row then by column.
+	 * @param data any compatible float array that holds data flattened by row then by column.
 	 * @return
 	 */
 	public Matrix4f setRowMajor(final float[] data) {

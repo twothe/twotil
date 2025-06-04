@@ -43,7 +43,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
- * Colletion of various utility functions that fit nowhere else.
+ * Collection of various utility functions that fit nowhere else.
  */
 public class Util {
 
@@ -154,7 +154,7 @@ public class Util {
 	 * Tests whether or not something is either null or contains no relevant content.
 	 * <p>
 	 * A String is blank if it contains nothing or only whitespace.<br>
-	 * A Colection is blank if it contains nothing or only blank elements.<br>
+	 * A Collection is blank if it contains nothing or only blank elements.<br>
 	 * An Array is blank if it contains nothing, or - in case of an array of Objects - all objects contained are blank. Arrays of primitive data types do not
 	 * check individual elements, as there is no definition what a blank value is for e.g. a float.
 	 */

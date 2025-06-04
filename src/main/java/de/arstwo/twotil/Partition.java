@@ -61,7 +61,7 @@ public final class Partition<T> extends AbstractList<List<T>> {
 	/**
 	 * Returns a chunk of the partitioned content with the given index.
 	 *
-	 * @param index the chunk index of the underlaying data.
+	 * @param index the chunk index of the underlying data.
 	 * @return a list of all elements in the requested chunk.
 	 */
 	@Override
