@@ -19,14 +19,14 @@ import java.nio.FloatBuffer;
 import java.util.Arrays;
 
 /**
- * A 3D Vector implentation (Quaternion) using floats.
+ * A 3D Vector implementation (Quaternion) using floats.
  * <p>
- * Describing this as a Quaternion allows for faster tranformation in 3D space using an appropriate Matrix4f. A vector can either be a direction or a position
+ * Describing this as a Quaternion allows for faster transformation in 3D space using an appropriate Matrix4f. A vector can either be a direction or a position
  * (point in space). A direction has by definition no origin, while a position is relative to the origin at (0,0,0).
  * <p>
  * Calculations are done in place, so no additional memory is allocated by operations.
  * <p>
- * Uses a FloatBuffer which is compatible with OpenGL and similar imeplementations.
+ * Uses a FloatBuffer which is compatible with OpenGL and similar implementations.
  */
 public class Vector4f implements Cloneable {
 
@@ -195,7 +195,7 @@ public class Vector4f implements Cloneable {
 	/**
 	 * Checks if this vector is a directional vector.
 	 *
-	 * @return true if it is a directional vector, false othewise.
+	 * @return true if it is a directional vector, false otherwise.
 	 */
 	public boolean isDirection() {
 		return (this.data[W] == 0);
@@ -204,14 +204,14 @@ public class Vector4f implements Cloneable {
 	/**
 	 * Checks if this vector is a position (point in space) vector.
 	 *
-	 * @return true if it is a position vector, false othewise.
+	 * @return true if it is a position vector, false otherwise.
 	 */
 	public boolean isPosition() {
 		return (this.data[W] == 1);
 	}
 
 	/**
-	 * Sets this vector to be a direactional vector.
+	 * Sets this vector to be a directional vector.
 	 *
 	 * @return this vector.
 	 */
