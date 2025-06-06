@@ -20,11 +20,12 @@ import org.testng.annotations.Test;
 
 public class PriorityThreadFactoryNGTest {
 
-        @Test
-        public void testGroupAndPriority() {
-                PriorityThreadFactory f = new PriorityThreadFactory("prio", Thread.MAX_PRIORITY);
-                Thread t = f.newThread(() -> {});
-                assertEquals(t.getThreadGroup().getName(), "prio");
-                assertEquals(t.getThreadGroup().getMaxPriority(), Thread.MAX_PRIORITY);
-        }
+	@Test
+	public void testGroupAndPriority() {
+		PriorityThreadFactory f = new PriorityThreadFactory("prio", Thread.MAX_PRIORITY);
+		Thread t = f.newThread(() -> {
+		});
+		assertEquals(t.getThreadGroup().getName(), "prio");
+		assertEquals(t.getThreadGroup().getMaxPriority(), Thread.MAX_PRIORITY);
+	}
 }

@@ -21,35 +21,35 @@ import org.testng.annotations.Test;
 
 public class CachedNGTest {
 
-        @Test
-        public void testGetCachesResults() {
-                AtomicInteger counter = new AtomicInteger();
-                Cached<String, Integer> cache = new Cached<>(k -> counter.incrementAndGet());
-                assertEquals(cache.get("a"), Integer.valueOf(1));
-                assertEquals(cache.get("a"), Integer.valueOf(1));
-                assertEquals(counter.get(), 1);
-        }
+	@Test
+	public void testGetCachesResults() {
+		AtomicInteger counter = new AtomicInteger();
+		Cached<String, Integer> cache = new Cached<>(k -> counter.incrementAndGet());
+		assertEquals(cache.get("a"), Integer.valueOf(1));
+		assertEquals(cache.get("a"), Integer.valueOf(1));
+		assertEquals(counter.get(), 1);
+	}
 
-        @Test
-        public void testClearAndReplace() {
-                AtomicInteger counter = new AtomicInteger();
-                Cached<String, Integer> cache = new Cached<>(k -> counter.incrementAndGet());
-                assertEquals(cache.get("a"), Integer.valueOf(1));
-                cache.replace("a", 42);
-                assertEquals(cache.get("a"), Integer.valueOf(42));
-                cache.clear();
-                assertEquals(cache.get("b"), Integer.valueOf(2));
-        }
+	@Test
+	public void testClearAndReplace() {
+		AtomicInteger counter = new AtomicInteger();
+		Cached<String, Integer> cache = new Cached<>(k -> counter.incrementAndGet());
+		assertEquals(cache.get("a"), Integer.valueOf(1));
+		cache.replace("a", 42);
+		assertEquals(cache.get("a"), Integer.valueOf(42));
+		cache.clear();
+		assertEquals(cache.get("b"), Integer.valueOf(2));
+	}
 
-        @Test
-        public void testRemoveIfAndReplaceIf() {
-                AtomicInteger counter = new AtomicInteger();
-                Cached<String, Integer> cache = new Cached<>(k -> counter.incrementAndGet());
-                assertEquals(cache.get("a"), Integer.valueOf(1));
-                cache.removeIf(e -> e.getKey().equals("a"));
-                assertEquals(cache.get("a"), Integer.valueOf(2));
-                assertTrue(cache.replaceIf("a", 2, 3));
-                assertEquals(cache.get("a"), Integer.valueOf(3));
-                assertFalse(cache.replaceIf("a", 2, 4));
-        }
+	@Test
+	public void testRemoveIfAndReplaceIf() {
+		AtomicInteger counter = new AtomicInteger();
+		Cached<String, Integer> cache = new Cached<>(k -> counter.incrementAndGet());
+		assertEquals(cache.get("a"), Integer.valueOf(1));
+		cache.removeIf(e -> e.getKey().equals("a"));
+		assertEquals(cache.get("a"), Integer.valueOf(2));
+		assertTrue(cache.replaceIf("a", 2, 3));
+		assertEquals(cache.get("a"), Integer.valueOf(3));
+		assertFalse(cache.replaceIf("a", 2, 4));
+	}
 }

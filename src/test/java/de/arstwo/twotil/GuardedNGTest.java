@@ -21,31 +21,31 @@ import org.testng.annotations.Test;
 
 public class GuardedNGTest {
 
-        @Test
-        public void testProcessAndAccess() {
-                Guarded<Integer> g = new Guarded<>(1);
-                assertEquals(g.process(v -> v + 1), Integer.valueOf(2));
-                AtomicBoolean called = new AtomicBoolean();
-                g.access(v -> called.set(true));
-                assertTrue(called.get());
-        }
+	@Test
+	public void testProcessAndAccess() {
+		Guarded<Integer> g = new Guarded<>(1);
+		assertEquals(g.process(v -> v + 1), Integer.valueOf(2));
+		AtomicBoolean called = new AtomicBoolean();
+		g.access(v -> called.set(true));
+		assertTrue(called.get());
+	}
 
-        @Test
-        public void testTryAccessWhenLocked() throws Exception {
-                Guarded<Integer> g = new Guarded<>(1);
-                Thread t = new Thread(() -> g.access(v -> {
-                        try {
-                                Thread.sleep(50);
-                        } catch (InterruptedException e) {
-                        }
-                }));
-                t.start();
-                Thread.sleep(10);
-                AtomicBoolean called = new AtomicBoolean();
-                assertFalse(g.tryAccess(v -> called.set(true)));
-                assertFalse(called.get());
-                t.join();
-                assertTrue(g.tryAccess(v -> called.set(true)));
-                assertTrue(called.get());
-        }
+	@Test
+	public void testTryAccessWhenLocked() throws Exception {
+		Guarded<Integer> g = new Guarded<>(1);
+		Thread t = new Thread(() -> g.access(v -> {
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+			}
+		}));
+		t.start();
+		Thread.sleep(10);
+		AtomicBoolean called = new AtomicBoolean();
+		assertFalse(g.tryAccess(v -> called.set(true)));
+		assertFalse(called.get());
+		t.join();
+		assertTrue(g.tryAccess(v -> called.set(true)));
+		assertTrue(called.get());
+	}
 }

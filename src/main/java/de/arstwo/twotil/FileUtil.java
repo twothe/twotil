@@ -49,23 +49,23 @@ public class FileUtil {
 	 * <p>
 	 * Ignores directories in the zip, only files in the root directory are extracted.
 	 */
-    public static boolean unzipRootOnly(final Path source, final Path targetDir) {
-        try (final ZipInputStream zis = new ZipInputStream(Files.newInputStream(source))) {
-            ZipEntry zipEntry;
-            while ((zipEntry = zis.getNextEntry()) != null) {
-                if (!zipEntry.isDirectory()
-                        && !zipEntry.getName().contains("/")
-                        && !zipEntry.getName().contains("\\")) {
-                    final Path target = targetDir.resolve(zipEntry.getName());
-                    Files.copy(zis, target, StandardCopyOption.REPLACE_EXISTING);
-                }
-                zis.closeEntry();
-            }
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
-    }
+	public static boolean unzipRootOnly(final Path source, final Path targetDir) {
+		try (final ZipInputStream zis = new ZipInputStream(Files.newInputStream(source))) {
+			ZipEntry zipEntry;
+			while ((zipEntry = zis.getNextEntry()) != null) {
+				if (!zipEntry.isDirectory()
+								&& !zipEntry.getName().contains("/")
+								&& !zipEntry.getName().contains("\\")) {
+					final Path target = targetDir.resolve(zipEntry.getName());
+					Files.copy(zis, target, StandardCopyOption.REPLACE_EXISTING);
+				}
+				zis.closeEntry();
+			}
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
+	}
 
 	/**
 	 * Tries to delete a given path, catches potential IOExceptions, and returns true on success, false otherwise.

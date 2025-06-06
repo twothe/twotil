@@ -20,8 +20,7 @@ import java.util.function.Supplier;
 /**
  * Initializes something on the first use.
  * <p>
- * Confirmation of initialization is done by replacing the accessor function.
- * This way the JIT can easily determine that the resulting accessor is empty
+ * Confirmation of initialization is done by replacing the accessor function. This way the JIT can easily determine that the resulting accessor is empty
  * boilerplate that can be inlined.
  */
 public class LazyInit<T> implements Supplier<T> {

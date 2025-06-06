@@ -34,7 +34,7 @@ public class Matrix4f implements Cloneable {
 	public static final int COLS = 4;
 	public static final int LENGTH = ROWS * COLS;
 	public static final int SIZE_BYTE = LENGTH * (Float.SIZE >>> 3);
-	
+
 	private static final float[] IDENTITY_DATA = new float[]{
 		1.0f, 0.0f, 0.0f, 0.0f,
 		0.0f, 1.0f, 0.0f, 0.0f,
@@ -42,7 +42,7 @@ public class Matrix4f implements Cloneable {
 		0.0f, 0.0f, 0.0f, 1.0f
 	};
 	protected static final Matrix4f IDENTITY = new Matrix4f().setIdentity();
-	
+
 	private static final float[] ZERO_DATA = new float[LENGTH];
 
 	/**
@@ -143,9 +143,10 @@ public class Matrix4f implements Cloneable {
 
 		return this;
 	}
-	
+
 	/**
 	 * Sets the content of this matrix to all 0.
+	 *
 	 * @return this matrix, with all content set to 0.
 	 */
 	public Matrix4f setZero() {

@@ -21,17 +21,17 @@ import org.testng.annotations.Test;
 
 public class LazyInitNGTest {
 
-        @Test
-        public void testInitializerRunsOnce() throws Exception {
-                AtomicInteger counter = new AtomicInteger();
-                LazyInit<Integer> lazy = new LazyInit<>(() -> counter.incrementAndGet());
-                Runnable r = () -> assertEquals(lazy.get(), Integer.valueOf(1));
-                Thread t1 = new Thread(r);
-                Thread t2 = new Thread(r);
-                t1.start();
-                t2.start();
-                t1.join();
-                t2.join();
-                assertEquals(counter.get(), 1);
-        }
+	@Test
+	public void testInitializerRunsOnce() throws Exception {
+		AtomicInteger counter = new AtomicInteger();
+		LazyInit<Integer> lazy = new LazyInit<>(() -> counter.incrementAndGet());
+		Runnable r = () -> assertEquals(lazy.get(), Integer.valueOf(1));
+		Thread t1 = new Thread(r);
+		Thread t2 = new Thread(r);
+		t1.start();
+		t2.start();
+		t1.join();
+		t2.join();
+		assertEquals(counter.get(), 1);
+	}
 }

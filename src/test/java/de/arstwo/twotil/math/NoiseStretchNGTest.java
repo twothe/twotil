@@ -22,31 +22,42 @@ import org.testng.annotations.Test;
 
 public class NoiseStretchNGTest {
 
-    private static class StubNoise extends SimplexNoise {
-            StubNoise() { super(new java.util.Random(0)); }
-            List<double[]> input = new ArrayList<>();
-                @Override
-                public double noise(double x, double z) { input.add(new double[]{x,z}); return 0.5; }
-                @Override
-                public double noise(double x, double y, double z) { input.add(new double[]{x,y,z}); return 0.7; }
-        }
+	private static class StubNoise extends SimplexNoise {
 
-        @Test
-        public void testGetNoise2D() {
-                StubNoise s = new StubNoise();
-                NoiseStretch n = new NoiseStretch(s, 2.0, 4.0);
-                assertEquals(n.getNoise(4.0, 8.0), 0.5);
-                assertEquals(s.input.get(0)[0], 2.0);
-                assertEquals(s.input.get(0)[1], 2.0);
-        }
+		StubNoise() {
+			super(new java.util.Random(0));
+		}
+		List<double[]> input = new ArrayList<>();
 
-        @Test
-        public void testGetNoise3D() {
-                StubNoise s = new StubNoise();
-                NoiseStretch n = new NoiseStretch(s, 2.0, 2.0, 2.0);
-                assertEquals(n.getNoise(4.0, 6.0, 8.0), 0.7);
-                assertEquals(s.input.get(0)[0], 2.0);
-                assertEquals(s.input.get(0)[1], 3.0);
-                assertEquals(s.input.get(0)[2], 4.0);
-        }
+		@Override
+		public double noise(double x, double z) {
+			input.add(new double[]{x, z});
+			return 0.5;
+		}
+
+		@Override
+		public double noise(double x, double y, double z) {
+			input.add(new double[]{x, y, z});
+			return 0.7;
+		}
+	}
+
+	@Test
+	public void testGetNoise2D() {
+		StubNoise s = new StubNoise();
+		NoiseStretch n = new NoiseStretch(s, 2.0, 4.0);
+		assertEquals(n.getNoise(4.0, 8.0), 0.5);
+		assertEquals(s.input.get(0)[0], 2.0);
+		assertEquals(s.input.get(0)[1], 2.0);
+	}
+
+	@Test
+	public void testGetNoise3D() {
+		StubNoise s = new StubNoise();
+		NoiseStretch n = new NoiseStretch(s, 2.0, 2.0, 2.0);
+		assertEquals(n.getNoise(4.0, 6.0, 8.0), 0.7);
+		assertEquals(s.input.get(0)[0], 2.0);
+		assertEquals(s.input.get(0)[1], 3.0);
+		assertEquals(s.input.get(0)[2], 4.0);
+	}
 }

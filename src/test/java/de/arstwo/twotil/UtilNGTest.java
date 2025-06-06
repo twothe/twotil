@@ -23,61 +23,68 @@ import org.testng.annotations.Test;
 
 public class UtilNGTest {
 
-        @Test
-        public void testIsBlankAndEmpty() {
-                assertTrue(Util.isBlank(""));
-                assertTrue(Util.isBlank("  "));
-                assertFalse(Util.isBlank("x"));
-                assertTrue(Util.isEmpty(new int[]{}));
-                assertFalse(Util.isEmpty(new int[]{1}));
-                assertTrue(Util.isBlank(Arrays.asList(" ")));
-        }
+	@Test
+	public void testIsBlankAndEmpty() {
+		assertTrue(Util.isBlank(""));
+		assertTrue(Util.isBlank("  "));
+		assertFalse(Util.isBlank("x"));
+		assertTrue(Util.isEmpty(new int[]{}));
+		assertFalse(Util.isEmpty(new int[]{1}));
+		assertTrue(Util.isBlank(Arrays.asList(" ")));
+	}
 
-        @Test
-        public void testJoinNonBlank() {
-                String r = Util.joinNonBlank(",", "a", " ", null, "b");
-                assertEquals(r, "a,b");
-        }
+	@Test
+	public void testJoinNonBlank() {
+		String r = Util.joinNonBlank(",", "a", " ", null, "b");
+		assertEquals(r, "a,b");
+	}
 
-        @Test
-        public void testFirstOrThrow() {
-                try {
-                        Util.firstOrThrow(Objects::nonNull, () -> new RuntimeException("fail"), null);
-                        fail("no throw");
-                } catch (RuntimeException e) {
-                }
-                assertEquals(Util.firstOrThrow(Objects::nonNull, RuntimeException::new, null, "x"), "x");
-        }
+	@Test
+	public void testFirstOrThrow() {
+		try {
+			Util.firstOrThrow(Objects::nonNull, () -> new RuntimeException("fail"), (String) null);
+			fail("no throw");
+		} catch (RuntimeException e) {
+		}
+		assertEquals(Util.firstOrThrow(Objects::nonNull, RuntimeException::new, null, "x"), "x");
+	}
 
-        @Test
-        public void testInverseAndGroup() {
-                Map<Integer, String> map = new HashMap<>();
-                map.put(1, "a");
-                map.put(2, "a");
-                Map<String, List<Integer>> inv = Util.inverseMap(map);
-                assertEquals(inv.get("a"), Arrays.asList(1,2));
+	@Test
+	public void testInverseAndGroup() {
+		Map<Integer, String> map = new HashMap<>();
+		map.put(1, "a");
+		map.put(2, "a");
+		Map<String, List<Integer>> inv = Util.inverseMap(map);
+		assertEquals(inv.get("a"), Arrays.asList(1, 2));
 
-                List<String> list = Arrays.asList("x","y","x");
-                Map<String, List<String>> grouped = Util.groupList(list, v -> v);
-                assertEquals(grouped.get("x"), Arrays.asList("x","x"));
-        }
+		List<String> list = Arrays.asList("x", "y", "x");
+		Map<String, List<String>> grouped = Util.groupList(list, v -> v);
+		assertEquals(grouped.get("x"), Arrays.asList("x", "x"));
+	}
 
-        @Test
-        public void testGroupListSorted() {
-                List<String> list = Arrays.asList("b","a","b");
-                Map<String, NavigableSet<String>> grouped = Util.groupListSorted(list, v -> v, Comparator.naturalOrder());
-                assertEquals(grouped.get("b").first(), "b");
-                assertEquals(grouped.get("b").size(), 1);
-        }
+	@Test
+	public void testGroupListSorted() {
+		List<String> list = Arrays.asList("b", "a", "b");
+		Map<String, NavigableSet<String>> grouped = Util.groupListSorted(list, v -> v, Comparator.naturalOrder());
+		assertEquals(grouped.get("b").first(), "b");
+		assertEquals(grouped.get("b").size(), 1);
+	}
 
-        @Test
-        public void testCompareDates() {
-                class D { Date d; D(Date d){ this.d = d; } }
-                List<D> l = Arrays.asList(new D(Date.from(LocalDate.of(2020,1,1).atStartOfDay(ZoneId.systemDefault()).toInstant())),
-                                         new D(Date.from(LocalDate.of(2019,1,1).atStartOfDay(ZoneId.systemDefault()).toInstant())));
-                l.sort(Util.compareDatesASC(x -> x.d));
-                assertTrue(l.get(0).d.before(l.get(1).d));
-                l.sort(Util.compareDatesDESC(x -> x.d));
-                assertTrue(l.get(0).d.after(l.get(1).d));
-        }
+	@Test
+	public void testCompareDates() {
+		class D {
+
+			Date d;
+
+			D(Date d) {
+				this.d = d;
+			}
+		}
+		List<D> l = Arrays.asList(new D(Date.from(LocalDate.of(2020, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant())),
+						new D(Date.from(LocalDate.of(2019, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant())));
+		l.sort(Util.compareDatesASC(x -> x.d));
+		assertTrue(l.get(0).d.before(l.get(1).d));
+		l.sort(Util.compareDatesDESC(x -> x.d));
+		assertTrue(l.get(0).d.after(l.get(1).d));
+	}
 }

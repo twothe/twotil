@@ -21,28 +21,28 @@ import org.testng.annotations.Test;
 
 public class PartitionNGTest {
 
-        @Test
-        public void testPartitionSizes() {
-                Partition<Integer> p = Partition.of(Arrays.asList(0,1,2,3,4), 2);
-                assertEquals(p.size(), 3);
-                assertEquals(p.get(0), Arrays.asList(0,1));
-                assertEquals(p.get(1), Arrays.asList(2,3));
-                assertEquals(p.get(2), Arrays.asList(4));
-        }
+	@Test
+	public void testPartitionSizes() {
+		Partition<Integer> p = Partition.of(Arrays.asList(0, 1, 2, 3, 4), 2);
+		assertEquals(p.size(), 3);
+		assertEquals(p.get(0), Arrays.asList(0, 1));
+		assertEquals(p.get(1), Arrays.asList(2, 3));
+		assertEquals(p.get(2), Arrays.asList(4));
+	}
 
-        @Test
-        public void testEmptyList() {
-                Partition<Integer> p = Partition.of(Collections.emptyList(), 3);
-                assertEquals(p.size(), 0);
-        }
+	@Test
+	public void testEmptyList() {
+		Partition<Integer> p = Partition.of(Collections.emptyList(), 3);
+		assertEquals(p.size(), 0);
+	}
 
-        @Test
-        public void testIndexOutOfBounds() {
-                Partition<Integer> p = Partition.of(Arrays.asList(1,2), 1);
-                try {
-                        p.get(3);
-                        fail("no throw");
-                } catch (IndexOutOfBoundsException e) {
-                }
-        }
+	@Test
+	public void testIndexOutOfBounds() {
+		Partition<Integer> p = Partition.of(Arrays.asList(1, 2), 1);
+		try {
+			p.get(3);
+			fail("no throw");
+		} catch (IndexOutOfBoundsException e) {
+		}
+	}
 }

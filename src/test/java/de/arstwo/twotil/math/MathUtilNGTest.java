@@ -20,18 +20,18 @@ import org.testng.annotations.Test;
 
 public class MathUtilNGTest {
 
-        @Test
-        public void testAboutEqual() {
-                assertTrue(MathUtil.aboutEqual(1.0f, 1.001f, 0.01f));
-                assertFalse(MathUtil.aboutEqual(1.0f, 1.02f, 0.01f));
-                assertTrue(MathUtil.aboutEqual(1.0, 1.0001, 0.01));
-                assertFalse(MathUtil.aboutEqual(1.0, 1.1, 0.01));
-        }
+	@Test
+	public void testAboutEqual() {
+		assertTrue(MathUtil.aboutEqual(1.0f, 1.001f, 0.01f));
+		assertFalse(MathUtil.aboutEqual(1.0f, 1.02f, 0.01f));
+		assertTrue(MathUtil.aboutEqual(1.0, 1.0001, 0.01));
+		assertFalse(MathUtil.aboutEqual(1.0, 1.1, 0.01));
+	}
 
-        @Test
-        public void testWithinRange() {
-                assertEquals(MathUtil.withinRange(5, 0, 10), Integer.valueOf(5));
-                assertEquals(MathUtil.withinRange(-1, 0, 10), Integer.valueOf(0));
-                assertEquals(MathUtil.withinRange(11, 0, 10), Integer.valueOf(10));
-        }
+	@Test
+	public void testWithinRange() {
+		assertEquals(MathUtil.withinRange(5, 0, 10), Integer.valueOf(5));
+		assertEquals(MathUtil.withinRange(-1, 0, 10), Integer.valueOf(0));
+		assertEquals(MathUtil.withinRange(11, 0, 10), Integer.valueOf(10));
+	}
 }
