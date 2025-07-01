@@ -265,10 +265,24 @@ public class Util {
 	}
 
 	/**
+	 * Convenience null-safe function to map a whole collection with a given mapper and returns the result in a new list.
+	 */
+	public static <T, R> List<R> mapListIfPresent(final Collection<T> collection, final Function<T, R> mapper) {
+		return collection == null ? null : collection.stream().map(mapper).collect(Collectors.toList());
+	}
+
+	/**
 	 * Convenience function to map a whole collection with a given mapper and returns the result in a new set.
 	 */
 	public static <T, R> Set<R> mapSet(final Collection<T> collection, final Function<T, R> mapper) {
 		return collection.stream().map(mapper).collect(Collectors.toSet());
+	}
+
+	/**
+	 * Convenience null-safe function to map a whole collection with a given mapper and returns the result in a new set.
+	 */
+	public static <T, R> Set<R> mapSetIfPresent(final Collection<T> collection, final Function<T, R> mapper) {
+		return collection == null ? null : collection.stream().map(mapper).collect(Collectors.toSet());
 	}
 
 	/**
@@ -397,6 +411,25 @@ public class Util {
 			return result;
 		} catch (final URISyntaxException e) {
 			throw new IllegalStateException(e); // impossible to reach
+		}
+	}
+
+	/**
+	 * Limits a string to a specific max length and cuts off the rest if necessary.
+	 *
+	 * @param input	any string to be potentially shortened
+	 * @param maxLength maximum length for the result string.
+	 * @return the original string if it was short enough, otherwise a string cut off at maxLength.
+	 */
+	public static String maxLength(final String input, final int maxLength) {
+		if (input == null) {
+			return null;
+		}
+		final int length = input.length();
+		if (length <= maxLength) {
+			return input;
+		} else {
+			return input.substring(0, maxLength);
 		}
 	}
 
