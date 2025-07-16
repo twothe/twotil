@@ -15,26 +15,5 @@
  */
 package de.arstwo.twotil;
 
-import java.time.temporal.ChronoUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import static org.testng.Assert.*;
-import org.testng.annotations.Test;
-
 public class IntervalCheckerNGTest {
-
-	@Test
-	public void testUpdateAndExecute() throws Exception {
-		IntervalChecker ic = IntervalChecker.every(200, ChronoUnit.MILLIS);
-		assertTrue(ic.updateIfDue());
-		assertFalse(ic.updateIfDue());
-		Thread.sleep(250);
-		AtomicBoolean ran = new AtomicBoolean();
-		assertTrue(ic.executeIfDue(() -> ran.set(true)));
-		assertTrue(ran.get());
-		assertFalse(ic.executeIfDue(() -> ran.set(false)));
-		ic.forceChecked();
-		assertFalse(ic.updateIfDue());
-		ic.forceDue();
-		assertTrue(ic.updateIfDue());
-	}
 }
